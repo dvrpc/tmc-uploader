@@ -1,11 +1,12 @@
-
-# A very simple Flask Hello World app for you to get started with...
-
+""" Setup the Flask application """
 from flask import Flask
 
+# Create the app
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello from Flask!'
+# Pass configuration values
+app.config.from_object("config.Config")
 
+# Wire up the routes
+from routes.landing_page import landing_bp
+app.register_blueprint(landing_bp)
