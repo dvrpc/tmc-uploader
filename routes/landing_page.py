@@ -6,7 +6,7 @@ from flask import (
     request,
     flash,
 )
-from flask_login import current_user, login_user, logout_user
+from flask_login import current_user, login_user, logout_user, login_required
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
@@ -173,6 +173,7 @@ def logout():
 
 
 @landing_bp.route('/rainbow-selector', methods=['GET'])
+@login_required
 def rainbow_selector():
     projects = Project.query.order_by(Project.name).all()
 
@@ -182,3 +183,33 @@ def rainbow_selector():
         form=SaveRainbowForm(),
         projects=projects
     )
+
+
+@landing_bp.route('/save/rainbow', methods=['POST'])
+@login_required
+def save_rainbow():
+
+    form = SaveRainbowForm()
+    location = form.location.data
+    gradient = form.gradient.data
+
+    # Assign gradient to user if "Project" is not in the text
+    if "your profile" in location:
+        current_user.background = gradient
+        db.session.commit()
+
+        return redirect(url_for('landing_bp.logged_in_landing_page'))
+
+    # Otherwise, assign to the project by ID
+    else:
+        project_name = location.replace("Project: ", "")
+        project = Project.query.filter_by(
+            name=project_name
+        ).first()
+
+        project.background = gradient
+
+        db.session.commit()
+
+        # TODO: redirect to project's page
+        return redirect(url_for('landing_bp.logged_in_landing_page'))
