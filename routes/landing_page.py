@@ -115,10 +115,11 @@ def public_landing_page():
                     password=login_form.password.data
                 ):
                     login_user(user)
-                    return redirect(url_for('landing_bp.logged_in_landing_page'))
+                    return redirect(
+                        url_for('landing_bp.logged_in_landing_page')
+                    )
 
             flash(r'Invalid username/password combination', "danger")
-
 
         # Handle SIGN UP attempts
         if request.form['submit'] == 'signup':
@@ -126,7 +127,8 @@ def public_landing_page():
             # Validate login attempt
             email_domain = request.form["email"].split("@")[-1]
             if email_domain != "dvrpc.org":
-                flash('This application is only accessible to DVRPC employees.', "danger")
+                msg = 'This application is only accessible to DVRPC employees.'
+                flash(msg, "danger")
 
             elif signup_form.validate_on_submit() and signup_form.email.data:
                 existing_user = User.query.filter_by(
@@ -142,9 +144,11 @@ def public_landing_page():
                     db.session.add(user)
                     db.session.commit()  # Create new user
                     login_user(user)  # Log in as newly created user
-                    return redirect(url_for('landing_bp.logged_in_landing_page'))
-
-                flash('A user already exists with that email address.', "danger")
+                    return redirect(
+                        url_for('landing_bp.logged_in_landing_page')
+                    )
+                msg = 'A user already exists with that email address.'
+                flash(msg, "danger")
 
     return render_template(
         'home_public.html',
