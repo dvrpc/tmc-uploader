@@ -18,4 +18,4 @@ def load_user(user_id):
 def unauthorized():
     """Redirect unauthorized users to Login page."""
     flash('You must be logged in to view that page.')
-    return redirect(url_for('auth_bp.get_started'))
+    return redirect(url_for('landing_bp.public_landing_page'))
