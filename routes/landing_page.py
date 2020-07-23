@@ -6,13 +6,15 @@ from flask import (
     request,
     flash,
 )
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-from models import User
+from helpers import make_random_gradient
+from models import User, Project
 from db import db
+
 
 # FORMS
 # -----
@@ -60,6 +62,23 @@ class LoginForm(FlaskForm):
     )
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
+
+
+class SaveRainbowForm(FlaskForm):
+    gradient = TextField(
+        'Gradient',
+        validators=[
+            DataRequired(),
+        ]
+    )
+    location = StringField(
+        "Where to save this gradient",
+        validators=[
+            DataRequired()
+        ]
+    )
+
+    submit = SubmitField('Add Project')
 
 
 # ROUTES
@@ -140,4 +159,22 @@ def logged_in_landing_page():
 
     return render_template(
         'home_logged_in.html',
+    )
+
+
+@landing_bp.route('/logout', methods=['GET'])
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@landing_bp.route('/rainbow-selector', methods=['GET'])
+def rainbow_selector():
+    projects = Project.query.order_by(Project.name).all()
+
+    return render_template(
+        'rainbows.html',
+        this_gradient=make_random_gradient(),
+        form=SaveRainbowForm(),
+        projects=projects
     )
