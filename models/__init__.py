@@ -14,6 +14,22 @@ from helpers import make_random_gradient
 load_dotenv(find_dotenv())
 SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
 
+project_files = db.Table(
+    'project_files',
+    db.Column(
+        'project_id',
+        db.Integer,
+        db.ForeignKey('projects.uid'),
+        primary_key=True
+    ),
+    db.Column(
+        'file_id',
+        db.Integer,
+        db.ForeignKey('filedata.uid'),
+        primary_key=True
+    )
+)
+
 
 class User(UserMixin, db.Model):
     """User account model."""
@@ -83,3 +99,128 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+
+class Project(db.Model):
+
+    __tablename__ = 'projects'
+
+    uid = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+    name = db.Column(
+        db.String(50),
+        nullable=False,
+        unique=True
+    )
+    description = db.Column(
+        db.Text,
+        nullable=False,
+        unique=False
+    )
+    created_by = db.Column(
+        db.Integer,
+        db.ForeignKey("app_users.id"),
+        nullable=False
+    )
+    background = db.Column(
+        db.Text,
+        nullable=False,
+        unique=False,
+        default=make_random_gradient()
+    )
+    tmc_files = db.relationship(
+        'TMCFile',
+        secondary=project_files,
+        lazy='subquery',
+        backref=db.backref(__tablename__, lazy=True)
+    )
+
+    def num_files(self):
+        return len(self.files)
+
+    def created_by_user(self):
+        return User.query.filter_by(id=self.created_by).first()
+
+
+
+class TMCFile(db.Model):
+
+    __tablename__ = 'filedata'
+
+    uid = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+    filename = db.Column(
+        db.Text,
+        nullable=False,
+        unique=False
+    )
+    title = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+    # project_id = db.Column(
+    #     db.Integer,
+    #     db.ForeignKey("projects.uid"),
+    #     nullable=False
+    # )
+    model_id = db.Column(
+        db.Integer,
+        nullable=True
+    )
+    uploaded_by = db.Column(
+        db.Integer,
+        db.ForeignKey("app_users.id"),
+        nullable=False
+    )
+    lat = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+    lng = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+    data_date = db.Column(
+        db.DateTime,
+        index=False,
+        unique=False,
+        nullable=True
+    )
+    legs = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+    start_time = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+    end_time = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
+
+    # projects = db.relationship(
+    #     'Project',
+    #     secondary=project_files,
+    #     lazy='subquery',
+    #     backref=db.backref(__tablename__, lazy=True)
+    # )
+
+    def name(self):
+        if self.title:
+            return self.title
+        else:
+            return self.filename
+
+    def upload_user(self):
+        return User.query.filter_by(id=self.uploaded_by).first()
