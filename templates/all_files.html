@@ -58,7 +58,7 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             All
                         </a>
                         <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
@@ -82,18 +82,53 @@
 
         <div class="container-fluid" style="{{ current_user.background }}; height: 100vh; background-repeat: no-repeat;background-attachment: fixed;"> 
             <div class="row p-4">
-                <div class="col-5 p-4 rounded transparent-white">
-                    <h2>
-                        Welcome
-                        <br>
-                        {{ current_user.name }}
-                    </h2>
-                    <a class="btn btn-primary" href="/all/files" role="button">Upload a File</a>
+                <div class="col-6 p-4 rounded transparent-white">
+                    <h1>
+                        All TMC Files
+                    </h1>
                 </div>
                 <div class="col-1">
                 </div>
-                <div class="col-6 p-4 rounded transparent-white">
-                    About, etc.
+                <div class="col-5 p-4 rounded transparent-white">
+                    <form method="post" action="/upload-file" enctype="multipart/form-data">
+                        {{form.csrf_token }}
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="selected_file" name="selected_file" multiple>
+                            <label class="custom-file-label" for="selected_file">Select one TMC file</label>
+                        </div>
+            
+                        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+                    </form>
+
+                </div>
+            </div>
+
+
+            <!-- Flashed messages -->
+            <div id="alert-container" class="row">
+                <div class="col">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class=flashes>
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} mt-2 mb-0" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                </div>
+            </div>            
+
+            <div class="row p-4">
+                <div class="col-12 p-4 rounded transparent-white">
+                    {% for file in all_files %}
+                        {{ file.name() }}
+                    {% endfor %}
                 </div>
             </div>
 

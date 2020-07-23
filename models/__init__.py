@@ -144,7 +144,6 @@ class Project(db.Model):
         return User.query.filter_by(id=self.created_by).first()
 
 
-
 class TMCFile(db.Model):
 
     __tablename__ = 'filedata'

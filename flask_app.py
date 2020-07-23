@@ -33,6 +33,9 @@ with app.app_context():
     from routes.landing_page import landing_bp
     app.register_blueprint(landing_bp)
 
+    from routes.all_files import all_files_bp
+    app.register_blueprint(all_files_bp)
+
 
 if __name__ == "__main__":
 
