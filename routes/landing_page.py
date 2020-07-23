@@ -14,6 +14,9 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 from models import User
 from db import db
 
+# FORMS
+# -----
+
 
 class SignupForm(FlaskForm):
     """User Sign-up Form."""
@@ -59,6 +62,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Log In')
 
 
+# ROUTES
+# ------
+
 landing_bp = Blueprint(
     'landing_bp', __name__,
     template_folder='templates',
@@ -67,19 +73,19 @@ landing_bp = Blueprint(
 
 
 @landing_bp.route('/', methods=['GET', 'POST'])
-def landing_page():
-    """
-    """
+def public_landing_page():
+    """ Public homepage that allows login and signup """
+
     # Bypass if user is logged in
     if current_user.is_authenticated:
-        return redirect("www.google.com")  
-        # return redirect(url_for('landing_bp.landing_page'))  
+        return redirect(url_for('landing_bp.logged_in_landing_page'))
 
     login_form = LoginForm()
     signup_form = SignupForm()
 
     if request.method == 'POST':
 
+        # Handle LOGIN attempts
         if request.form['submit'] == 'login':
             if login_form.validate_on_submit() and login_form.email.data:
                 user = User.query.filter_by(
@@ -90,10 +96,12 @@ def landing_page():
                     password=login_form.password.data
                 ):
                     login_user(user)
-                    return redirect(url_for('main_bp.dashboard'))
+                    return redirect(url_for('landing_bp.logged_in_landing_page'))
 
             flash(r'Invalid username/password combination', "danger")
 
+
+        # Handle SIGN UP attempts
         if request.form['submit'] == 'signup':
 
             # Validate login attempt
@@ -115,12 +123,21 @@ def landing_page():
                     db.session.add(user)
                     db.session.commit()  # Create new user
                     login_user(user)  # Log in as newly created user
-                    return redirect(url_for('main_bp.dashboard'))
+                    return redirect(url_for('landing_bp.logged_in_landing_page'))
 
                 flash('A user already exists with that email address.', "danger")
 
     return render_template(
-        'home.html',
-        # login_form=login_form,
-        # signup_form=signup_form,
+        'home_public.html',
+        login_form=login_form,
+        signup_form=signup_form,
+    )
+
+
+@landing_bp.route('/welcome', methods=['GET', 'POST'])
+def logged_in_landing_page():
+    """ Homepage for logged-in users """
+
+    return render_template(
+        'home_logged_in.html',
     )
