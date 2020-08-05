@@ -17,5 +17,5 @@ def load_user(user_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirect unauthorized users to Login page."""
-    flash('You must be logged in to view that page.')
+    flash('You must be logged in to view that page.', "danger")
     return redirect(url_for('landing_bp.public_landing_page'))
