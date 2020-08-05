@@ -157,11 +157,17 @@ def public_landing_page():
 
 
 @landing_bp.route('/welcome', methods=['GET', 'POST'])
+@login_required
 def logged_in_landing_page():
     """ Homepage for logged-in users """
 
+    your_projects = Project.query.filter_by(
+        created_by=current_user.id
+    ).order_by(Project.uid.desc()).all()
+
     return render_template(
         'home_logged_in.html',
+        your_projects=your_projects
     )
 
 

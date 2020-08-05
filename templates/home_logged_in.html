@@ -28,6 +28,13 @@
                 background-color:rgba(255,255,255,0.5) !important;
                 border:none !important;
             }
+            .table>tbody>tr>td,
+            .table>thead>tr>th {
+                border-top: none;
+            }
+            .small-table-text{
+                font-size: 70%;
+            }
         </style>
 
 
@@ -64,12 +71,11 @@
             </div>
         </nav>
 
-        <div class="container-fluid" style="{{ current_user.background }}; height: 93.5vh; background-repeat: no-repeat;background-attachment: fixed;"> 
+        <div class="container-fluid" style="{{ current_user.background }}; min-height: 93.5vh; background-repeat: no-repeat;background-attachment: fixed;"> 
             <div class="row p-4">
                 <div class="col-5 p-4 rounded transparent-white">
                     <h2>
                         Welcome
-                        <br>
                         {{ current_user.name }}
                     </h2>
                     <p class="mt-4">
@@ -80,17 +86,41 @@
                 <div class="col-1">
                 </div>
                 <div class="col-6 p-4 rounded transparent-white text-center">
-                    <a class="btn btn-primary" href="/all-files" role="button">Upload a File</a>
-
                     <br><br>
-                    <a class="btn btn-outline-primary" href="/all-projects" role="button">Add a Project</a>
+                    <a class="btn btn-light btn-lg mr-2" href="/all-files" role="button">Upload a File</a>
+                    <a class="btn btn-light btn-lg ml-2" href="/all-projects" role="button">Add a Project</a>
                 </div>
             </div>
             <div class="row p-4">
                 <div class="col p-4 rounded transparent-white">
+                    {% if not your_projects %}
                     <p>
                         Projects you create and files you upload will appear here.
                     </p>
+                    {% else %}
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col"># Files</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for project in your_projects %}
+                                    <tr>
+                                        <td>
+                                            <a href="/project/{{project.uid}}">
+                                                {{project.name}}
+                                            </a>
+                                        </td>
+                                        <td>{{project.description}}</td>
+                                        <td>{{project.num_files()}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
                 </div>
             </div>
         </div>
