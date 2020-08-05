@@ -111,7 +111,7 @@
         
                           for (var i = 0; i < data.length; i++) {
                             marker = new L.marker([data[i][0], data[i][1]])
-                              .bindPopup(data[i][2])
+                              .bindPopup("<a href='/file/" + data[i][3] + "'>" + data[i][2] + "</a>")
                               .addTo(mymap);
                               // marker_list.push(marker)
                               all_pins.addLayer(marker);
@@ -170,7 +170,7 @@
                                 <td class="small-table-text">{{ "{0:,.0f}".format(file.am_volume) }}</td>
                                 <td class="small-table-text">{{ file.pm_peak_start }}</td>
                                 <td class="small-table-text">{{ "{0:,.0f}".format(file.pm_volume) }}</td>
-                                <td><a class="btn btn-outline-secondary btn-sm" href="#" role="button">Explore</a></td>
+                                <td><a class="btn btn-outline-secondary btn-sm" href="/file/{{file.uid}}" role="button">Explore</a></td>
                             </tr>
     
 

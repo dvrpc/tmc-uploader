@@ -24,7 +24,7 @@ def all_files():
 
     all_files = TMCFile.query.order_by(TMCFile.uid.desc()).all()
 
-    latlng_data = [[f.lat, f.lng, f.name()] for f in all_files if f.lat]
+    latlng_data = [[f.lat, f.lng, f.name(), f.uid] for f in all_files if f.lat]
 
     return render_template(
         'all_files.html',
