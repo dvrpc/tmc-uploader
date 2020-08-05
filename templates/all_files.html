@@ -28,14 +28,20 @@
                 background-color:rgba(255,255,255,0.5) !important;
                 border:none !important;
             }
+            .table>thead>tr>th {
+                border-top: none;
+            }
+            .small-table-text{
+                font-size: 70%;
+            }
         </style>
 
 
     </head>
-    <body>
+    <body style='height: 100%'>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="navbar-brand" >
-                <a class="navbar-brand" href="/">Turning Movement Counts</a>
+                <a class="navbar-brand" href="/">TurningMovementCount.app</a>
             </div>
             
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,62 +51,80 @@
             <!-- GEAR ICON dropdown -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M8.837 1.626c-.246-.835-1.428-.835-1.674 0l-.094.319A1.873 1.873 0 0 1 4.377 3.06l-.292-.16c-.764-.415-1.6.42-1.184 1.185l.159.292a1.873 1.873 0 0 1-1.115 2.692l-.319.094c-.835.246-.835 1.428 0 1.674l.319.094a1.873 1.873 0 0 1 1.115 2.693l-.16.291c-.415.764.42 1.6 1.185 1.184l.292-.159a1.873 1.873 0 0 1 2.692 1.116l.094.318c.246.835 1.428.835 1.674 0l.094-.319a1.873 1.873 0 0 1 2.693-1.115l.291.16c.764.415 1.6-.42 1.184-1.185l-.159-.291a1.873 1.873 0 0 1 1.116-2.693l.318-.094c.835-.246.835-1.428 0-1.674l-.319-.094a1.873 1.873 0 0 1-1.115-2.692l.16-.292c.415-.764-.42-1.6-1.185-1.184l-.291.159A1.873 1.873 0 0 1 8.93 1.945l-.094-.319zm-2.633-.283c.527-1.79 3.065-1.79 3.592 0l.094.319a.873.873 0 0 0 1.255.52l.292-.16c1.64-.892 3.434.901 2.54 2.541l-.159.292a.873.873 0 0 0 .52 1.255l.319.094c1.79.527 1.79 3.065 0 3.592l-.319.094a.873.873 0 0 0-.52 1.255l.16.292c.893 1.64-.902 3.434-2.541 2.54l-.292-.159a.873.873 0 0 0-1.255.52l-.094.319c-.527 1.79-3.065 1.79-3.592 0l-.094-.319a.873.873 0 0 0-1.255-.52l-.292.16c-1.64.893-3.433-.902-2.54-2.541l.159-.292a.873.873 0 0 0-.52-1.255l-.319-.094c-1.79-.527-1.79-3.065 0-3.592l.319-.094a.873.873 0 0 0 .52-1.255l-.16-.292c-.892-1.64.902-3.433 2.541-2.54l.292.159a.873.873 0 0 0 1.255-.52l.094-.319z"/>
-                            <path fill-rule="evenodd" d="M8 5.754a2.246 2.246 0 1 0 0 4.492 2.246 2.246 0 0 0 0-4.492zM4.754 8a3.246 3.246 0 1 1 6.492 0 3.246 3.246 0 0 1-6.492 0z"/>
-                            </svg>
-                        </a>
-                        <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                            <a class="nav-link" href="/logout">Log Out</a>
-                            <a class="nav-link" href="/rainbow-selector">&#x1F308</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/all-projects">Projects</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            All
-                        </a>
-                        <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                            <a class="nav-link" href="/all/files">Files</a>
-                            <a class="nav-link" href="/all/projects">Projects</a>
-                        </div>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/all-files">Files</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Your
-                        </a>
-                        <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-                            <a class="nav-link" href="/your/files">Files</a>
-                            <a class="nav-link" href="/your/projects">Projects</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rainbow-selector">&#x1F308</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Log Out</a>
+                    </li>
+
+
                 </ul>
             </div>
         </nav>
 
-        <div class="container-fluid" style="{{ current_user.background }}; height: 100vh; background-repeat: no-repeat;background-attachment: fixed;"> 
+        <div class="container-fluid" style="{{ current_user.background }}; height: 93.5vh; background-repeat: no-repeat;background-attachment: fixed;"> 
             <div class="row p-4">
-                <div class="col-6 p-4 rounded transparent-white">
+                <div class="col-4 p-4 rounded transparent-white">
                     <h1>
-                        All TMC Files
+                        TMC Files
                     </h1>
-                </div>
-                <div class="col-1">
-                </div>
-                <div class="col-5 p-4 rounded transparent-white">
+                    <hr>
+                    <p>
+                        Upload a TMC file using the form below:
+                    </p>
                     <form method="post" action="/upload-file" enctype="multipart/form-data">
                         {{form.csrf_token }}
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="selected_file" name="selected_file" multiple>
-                            <label class="custom-file-label" for="selected_file">Select one TMC file</label>
+                            <label class="custom-file-label" for="selected_file">Select a .xls file</label>
                         </div>
             
-                        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+                        <button type="submit" class="btn btn-outline-primary mt-2">Validate & Upload</button>
                     </form>
-
                 </div>
+                <div class="col-1 ">
+                </div>
+                <div class="col-7 p-0 rounded" style="height: 40vh;">
+                    <div id="mapid" style="height: 100%" class="pr-0">
+                      <script>
+                        var mymap = L.map('mapid').setView([39.952297, -75.163743], 10);
+          
+                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                              maxZoom: 18,
+                              id: 'mapbox/streets-v11',
+                              tileSize: 512,
+                              zoomOffset: -1,
+                              accessToken: 'pk.eyJ1IjoiYWFyb25kdnJwYyIsImEiOiJja2NvN2s5dnAwaWR2MnptbzFwYmd2czVvIn0.Fcc34gzGME_zHR5q4RnSOg'
+                          }).addTo(mymap);
+        
+                          var data = {{latlngs | safe}}
+        
+                          var all_pins = L.featureGroup().addTo(mymap);
+        
+                          for (var i = 0; i < data.length; i++) {
+                            marker = new L.marker([data[i][0], data[i][1]])
+                              .bindPopup(data[i][2])
+                              .addTo(mymap);
+                              // marker_list.push(marker)
+                              all_pins.addLayer(marker);
+                          }
+        
+                          mymap.fitBounds(all_pins.getBounds());
+        
+        
+                      </script>
+          
+                    </div>
+          
+                  </div>                
             </div>
 
 
@@ -124,12 +148,38 @@
                 </div>
             </div>            
 
-            <div class="row p-4">
-                <div class="col-12 p-4 rounded transparent-white">
-                    {% for file in all_files %}
-                        {{ file.name() }}
-                    {% endfor %}
+
+            <div class="row p-4 ">
+                <div class="col-12 rounded transparent-white">
+                    <table class="table table-sm " style="border-top:none">
+                        <thead>
+                            <tr>
+                                <th scope="col">File Name</th>
+                                <th scope="col">AM Peak</th>
+                                <th scope="col">AM Volume</th>
+                                <th scope="col">PM Peak</th>
+                                <th scope="col">PM Volume</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in all_files %}
+                            <tr>
+                                <td>{{ file.name() }}</td>
+                                <td class="small-table-text">{{ file.am_peak_start }}</td>
+                                <td class="small-table-text">{{ "{0:,.0f}".format(file.am_volume) }}</td>
+                                <td class="small-table-text">{{ file.pm_peak_start }}</td>
+                                <td class="small-table-text">{{ "{0:,.0f}".format(file.pm_volume) }}</td>
+                                <td><a class="btn btn-outline-secondary btn-sm" href="#" role="button">Explore</a></td>
+                            </tr>
+    
+
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+
+
             </div>
 
         </div>
