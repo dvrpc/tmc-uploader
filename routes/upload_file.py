@@ -82,17 +82,21 @@ def upload_file():
         )
         db.session.add(tmc_entry)
 
-        tbl_name = f"tmc_{tmc_entry.uid}"
-        kwargs = {
-            "if_exists": "replace",
-            "schema": "tmc_data",
-        }
+        try:
+            db.session.commit()
 
-        raw_tmc.publish_df_to_sql(df, tbl_name, kwargs=kwargs)
+            tbl_name = f"tmc_{tmc_entry.uid}"
+            kwargs = {
+                "if_exists": "replace",
+                "schema": "tmc_data",
+            }
 
-        db.session.commit()
+            raw_tmc.publish_df_to_sql(df, tbl_name, kwargs=kwargs)
 
-        flash(f"Uploaded {raw_tmc.meta['title']}", "success")
+            flash(f"Uploaded file #{tmc_entry.uid} - {raw_tmc.meta['title']}", "success")
+        except:
+            db.session.rollback()
+
         # flash(data, "info")
         # flash(f"This file includes data between {start} & {end}", "info")
         # flash(f"Vehicle Modes - {sorted(modes)}", "info")
