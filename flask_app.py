@@ -30,15 +30,25 @@ login_manager.init_app(app)
 with app.app_context():
 
     # Wire up the routes
+
+    # Landing pages
     from routes.landing_page import landing_bp
     app.register_blueprint(landing_bp)
 
+    # File views
     from routes.all_files import all_files_bp
     app.register_blueprint(all_files_bp)
 
+    # Upload data views
+    from routes.upload_file import upload_bp
+    app.register_blueprint(upload_bp)
+
+    # Project pages
+    from routes.projects import project_bp
+    app.register_blueprint(project_bp)
+
 
 if __name__ == "__main__":
-
 
     with app.app_context():
         db.create_all()
