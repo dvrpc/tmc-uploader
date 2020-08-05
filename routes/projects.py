@@ -1,7 +1,9 @@
 from flask import (
     Blueprint,
     render_template,
-    flash
+    flash,
+    redirect,
+    url_for
 )
 from flask_login import login_required, current_user
 
@@ -29,6 +31,24 @@ def all_projects():
         new_name = form.project_name.data
         desc = form.description.data
 
+        # QA -  check the user input
+        if len(new_name) == 0:
+            flash("Please provide a name for your project", "danger")
+            return redirect(url_for('project_bp.all_projects'))
+
+        if len(new_name) > 50:
+            flash("Please use a shorter name for your project", "danger")
+            return redirect(url_for('project_bp.all_projects'))
+
+        if len(desc) == 0:
+            flash("Please provide a description for your project", "danger")
+            return redirect(url_for('project_bp.all_projects'))
+
+        # Check if this project already exists
+        if Project.query.filter_by(name=new_name).first():
+            flash(f'A project named "{new_name}" already exists', "danger")
+            return redirect(url_for('project_bp.all_projects'))
+
         new_project = Project(
             name=new_name,
             description=desc,
@@ -46,3 +66,4 @@ def all_projects():
         all_projects=all_projects,
         form=form,
     )
+
