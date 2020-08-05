@@ -11,10 +11,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
-from helpers import make_random_gradient
-from models import User, Project
 from db import db
-
+from models import User, Project
+from common.random_rainbow import make_random_gradient
 
 # FORMS
 # -----

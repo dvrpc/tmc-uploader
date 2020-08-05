@@ -9,7 +9,7 @@ from dotenv import load_dotenv, find_dotenv
 # import pandas as pd
 
 from db import db
-from helpers import make_random_gradient
+from common.random_rainbow import make_random_gradient
 
 load_dotenv(find_dotenv())
 SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI")
@@ -138,7 +138,7 @@ class Project(db.Model):
     )
 
     def num_files(self):
-        return len(self.files)
+        return len(self.tmc_files)
 
     def created_by_user(self):
         return User.query.filter_by(id=self.created_by).first()
@@ -179,12 +179,14 @@ class TMCFile(db.Model):
     lat = db.Column(
         db.Text,
         nullable=True,
-        unique=False
+        unique=False,
+        default=39.852413
     )
     lng = db.Column(
         db.Text,
         nullable=True,
-        unique=False
+        unique=False,
+        default=-75.264969
     )
     data_date = db.Column(
         db.DateTime,
@@ -192,18 +194,52 @@ class TMCFile(db.Model):
         unique=False,
         nullable=True
     )
+    modes = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
     legs = db.Column(
         db.Text,
         nullable=True,
         unique=False
     )
-    start_time = db.Column(
+    movements = db.Column(
         db.Text,
         nullable=True,
         unique=False
     )
-    end_time = db.Column(
-        db.Text,
+    am_peak_start = db.Column(
+        db.DateTime,
+        index=False,
+        unique=False,
+        nullable=True
+    )
+    pm_peak_start = db.Column(
+        db.DateTime,
+        index=False,
+        unique=False,
+        nullable=True
+    )
+    am_volume = db.Column(
+        db.Float,
+        index=False,
+        unique=False,
+        nullable=True
+    )
+    pm_volume = db.Column(
+        db.Float,
+        index=False,
+        unique=False,
+        nullable=True
+    )
+    count_start_time = db.Column(
+        db.DateTime,
+        nullable=True,
+        unique=False
+    )
+    count_end_time = db.Column(
+        db.DateTime,
         nullable=True,
         unique=False
     )
