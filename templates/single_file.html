@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+        <!-- Plotly -->
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/>
+
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin=""></script>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+
+        <title>TMC Summarizer</title>
+
+        <style>
+            .transparent-white{
+                background-color:rgba(255,255,255,0.5) !important;
+                border:none !important;
+            }
+            .table>thead>tr>th {
+                border-top: none;
+            }
+            .small-table-text{
+                font-size: 70%;
+            }
+        </style>
+
+
+    </head>
+    <body style='height: 100%'>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="navbar-brand" >
+                <a class="navbar-brand" href="/">TurningMovementCount.app</a>
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- GEAR ICON dropdown -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/all-projects">Projects</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/all-files">Files</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rainbow-selector">&#x1F308</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Log Out</a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid" style="{{ current_user.background }}; min-height: 93.5vh; background-repeat: no-repeat;background-attachment: fixed;"> 
+            <div class="row pl-4 pr-4 pt-4">
+                <div class="col-6 p-4 rounded transparent-white">
+                    <h3>
+                       {{this_file.name() }}
+                    </h3>
+                    <hr>
+                    <form method="post" action="{{request.path}}" >
+  
+                        {{form.csrf_token }}
+                        <table style="width:100%">
+                          <tbody>
+                            <tr >
+                              <td>
+                                Title
+                              </td>
+                              <td>
+                                <textarea class="form-control" id="title" name="title" rows="1">{{this_file.title}}</textarea>
+                              </td>
+                            </tr>
+                            <tr> 
+                              <td>
+                                Model ID
+                              </td>
+                              <td>
+                                <input class="form-control" type="text" value="{{this_file.model_id}}" name="model_id">
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Lat
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" id="lat" name="lat" value="{{this_file.lat}}">
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Long
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" id="lng" name="lng" value="{{this_file.lng}}">
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Legs
+                              </td>
+                              <td>
+                                <textarea class="form-control" id="legs" name="legs" rows="1">{{this_file.legs}}</textarea>
+                              </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                  Movements
+                                </td>
+                                <td>
+                                  <textarea class="form-control" id="legs" name="movements" rows="1">{{this_file.movements}}</textarea>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Modes
+                                </td>
+                                <td>
+                                  <textarea class="form-control" id="legs" name="modes" rows="1">{{this_file.modes}}</textarea>
+                                </td>
+                              </tr>
+              
+                          </tbody>
+                        </table>
+                        <div class="text-center">
+                          <button type="submit" class="btn btn-primary mt-2">Update Metadata</button>
+                        </div>
+                      </form>
+                      <div class="text-center mt-2">
+                        <a href="#" class="btn btn-secondary">Add File to Project</a>
+                    </div>
+
+
+
+                </div>
+                <div class="col-6 pl-1 pr-0 rounded" style="min-height: 40vh;">
+                    <div id="map" style="height: 100%" class="pr-0">
+                      <script>
+                        var lnglat = {{latlng_data | safe }};
+
+                        var mymap = L.map('map').setView(lnglat, 11);
+
+                        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                                    maxZoom: 18,
+                                    id: 'mapbox/streets-v11',
+                                    tileSize: 512,
+                                    zoomOffset: -1,
+                                    accessToken: 'pk.eyJ1IjoiYWFyb25kdnJwYyIsImEiOiJja2NvN2s5dnAwaWR2MnptbzFwYmd2czVvIn0.Fcc34gzGME_zHR5q4RnSOg'
+                                }).addTo(mymap);
+
+                        marker = new L.marker(lnglat)
+                        .addTo(mymap);
+
+
+                        var popup = L.popup();
+
+                        function onMapClick(e) {
+                            popup
+                                .setLatLng(e.latlng)
+                                .setContent("New TMC Location")
+                                .openOn(mymap);
+                                $('#lat').val(e.latlng.lat);
+                                $('#lng').val(e.latlng.lng);
+                        }
+
+                        mymap.on('click', onMapClick);
+
+        
+                      </script>
+          
+                    </div>
+          
+                  </div>                
+            </div>
+
+
+            <!-- Flashed messages -->
+            <div id="alert-container" class="row pl-4 pr-4">
+                <div class="col mt-3 mb-0">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class=flashes>
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} " role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                </div>
+            </div>            
+
+            <!-- GRAPH of all data -->
+            <div class="row pl-4 pr-4">
+                <div class="col-12 pl-4 pr-4 transparent-white rounded">
+                <div class="chart" id="bargraph" >
+                    <script>
+                    var graphs = {{ fig | safe}};
+                    var layout = {
+                        title: 'Raw Data',
+                        barmode: 'stack',
+                        // showlegend: false,
+                        height: 300,
+                        paper_bgcolor: "rgba(0,0,0,0)",
+                        plot_bgcolor: "rgba(0,0,0,0)",
+                        yaxis: {gridcolor: "rgba(0,0,0,0.1)"},
+                        height: 350,
+                        font: {
+                            family: 'Roboto Mono, monospace',
+                            size: 10,
+                            color: '#fffff'
+                        }
+                    };
+                    Plotly.plot('bargraph',graphs,layout);
+                    </script>
+                </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+
+    </body>
+</html>

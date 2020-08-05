@@ -47,6 +47,10 @@ with app.app_context():
     from routes.projects import project_bp
     app.register_blueprint(project_bp)
 
+    # Single file views
+    from routes.single_file import single_file_bp
+    app.register_blueprint(single_file_bp)
+
 
 if __name__ == "__main__":
 
