@@ -29,17 +29,17 @@
                 border:none !important;
             }
             ::-webkit-input-placeholder {
-   font-style: italic;
-}
-:-moz-placeholder {
-   font-style: italic;  
-}
-::-moz-placeholder {
-   font-style: italic;  
-}
-:-ms-input-placeholder {  
-   font-style: italic; 
-}
+                font-style: italic;
+            }
+            :-moz-placeholder {
+                font-style: italic;  
+            }
+            ::-moz-placeholder {
+                font-style: italic;  
+            }
+            :-ms-input-placeholder {  
+                font-style: italic; 
+            }
         </style>
 
 
@@ -76,7 +76,7 @@
             </div>
         </nav>
 
-        <div class="container-fluid" style="{{ current_user.background }}; height: 100%; background-repeat: no-repeat;background-attachment: fixed;"> 
+        <div class="container-fluid" style="{{ current_user.background }}; min-height: 93.5vh; background-repeat: no-repeat;background-attachment: fixed;"> 
             <div class="row pr-4 pl-4 pt-4 pb-0">
                 <div class="col-12 p-4 rounded transparent-white">
                     <h1>
@@ -132,10 +132,8 @@
                                 {{ project.name }} 
                                 <br>
                             </h5>
-                            <br>
-                            <ul>
-                                <li>{{ project.num_files() }} files</li>
-                            </ul>
+                            {{ project.num_files() }} files
+                            <br><br>
                             <a class="btn btn-secondary btn-sm" href="#" role="button">Explore</a>
                         </div>
                     {% endfor %}
