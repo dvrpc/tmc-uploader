@@ -94,8 +94,12 @@ def upload_file():
             raw_tmc.publish_df_to_sql(df, tbl_name, kwargs=kwargs)
 
             flash(f"Uploaded file #{tmc_entry.uid} - {raw_tmc.meta['title']}", "success")
+
+            return redirect(url_for('single_file_bp.single_file', file_id=tmc_entry.uid))
+
         except:
             db.session.rollback()
+            flash(f"Unexpected error encountered while writing to the database. Rolled back.", "danger")
 
         # flash(data, "info")
         # flash(f"This file includes data between {start} & {end}", "info")
@@ -106,7 +110,7 @@ def upload_file():
         # flash(f"AM Peak - {am_start}", "info")
         # flash(f"PM Peak - {pm_start}", "info")
 
-        session['validated'] = True
+        # session['validated'] = True
 
     except Exception as e:
         flash(str(e), "danger")
