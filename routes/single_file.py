@@ -46,10 +46,12 @@ def single_file(file_id):
         this_file.lat = str(form.lat.data)
         this_file.lng = str(form.lng.data)
         this_file.legs = str(form.legs.data)
+        this_file.movements = str(form.movements.data)
+        this_file.modes = str(form.modes.data)
 
         db.session.commit()
 
-        flash(f"Updated metadata for {this_file.name()}", "success")
+        flash(f"Successfully updated metadata", "success")
 
     latlng_data = [this_file.lat, this_file.lng]
 
