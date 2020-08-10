@@ -105,19 +105,27 @@
                 <div class="col-6 p-4 rounded transparent-white">
                     <h3>
                       {{this_file.name() }}
-                      &nbsp; &nbsp; &nbsp;
-                      <a class="btn btn-light btn-sm" href="/all-files" role="button">Return to all files</a>
-                      &nbsp; &nbsp; &nbsp;
-                      <a href="{{request.path}}/assign" class="btn btn-secondary btn-sm">Add File to Project</a>
-
-                      </h3>
+                    </h3>                   
                     <p class="inline-code">
                       {{this_file.filename}}
                     </p>
                     <hr>
-                    <form method="post" action="{{request.path}}" >
+                    {% if this_file.num_projects() > 0 %}
+                      <p>
+                        This file is assigned to:
+                          {% for project in this_file.project_ids %}
+                            <a href="/project/{{project.uid}}" class="btn btn-outline-primary btn-sm">{{project.name}}</a>
+                          {% endfor %}
+                      </p>
+                    {% else %}
+                      <p>
+                        <a href="{{request.path}}#add-projects" class="btn btn-outline-primary btn-sm">Assign File to Project(s)</a>
+                      </p>
+                    {% endif %}
+                    <hr>
+                    <form method="post" action="{{request.path}}/metadata-update" >
   
-                        {{form.csrf_token }}
+                        {{metadata_form.csrf_token }}
                         <table style="width:100%">
                           <tbody>
                             <tr >
@@ -255,7 +263,67 @@
                 </div>
             </div>
 
+            <!-- Assign File to Projects -->
+            <div class="row pl-4 pr-4 pt-2">
+              <div id="add-projects" class="col-12 p-4 transparent-white rounded">
+                <form action="{{request.path}}/project-update" method="POST">
 
+                  {{project_form.csrf_token}}
+                  <center>
+                    <button type="submit" class="btn btn-outline-primary btn-lg mb-2 ">Update Project Assignment</button>
+                </center>
+  
+                  <table class="table table-sm">
+                    <thead>
+                        <tr>
+                          <th scope="col">&#x2714;</th>
+                          <th scope="col">Project Name</th>
+                          <th scope="col">Description</th>
+                          <th scope="col"># Files</th>
+                          <th scope="col">Uploaded By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for project in all_projects %}
+                            <tr>
+                              <td>
+                                {% if project in this_file.projects %}
+                                  <div class="form-check">
+                                      <input type="checkbox" class="form-check-input" name="project_{{project.uid}}" checked>
+                                  </div>
+                                {% else %}
+                                  <div class="form-check">
+                                      <input type="checkbox" class="form-check-input" name="project_{{project.uid}}">
+                                  </div>
+                                {% endif %}
+                              </td>
+                              <td>
+                                    <a href="/project/{{project.uid}}">
+                                        {{project.name}}
+                                    </a>
+                              </td>
+                              <td>
+                                {{project.description}}
+                              </td>
+                              <td>{{project.num_files()}}
+                                {% if project.num_files() == 1%}
+                                  file
+                                {% else %}
+                                  files
+                                {% endif %}
+                              </td>
+                              <td>
+                                {{project.created_by_user().name}}
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </form>
+
+
+              </div>
+          </div>
         </div>
 
         <!-- Optional JavaScript -->
