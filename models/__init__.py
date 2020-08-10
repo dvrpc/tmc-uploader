@@ -254,6 +254,15 @@ class TMCFile(db.Model):
     def pid_list(self):
         return [p.uid for p in self.project_ids]
 
+    def num_projects(self):
+        num = len(self.project_ids)
+        return num
+        # if num == 1:
+        #     txt = "project"
+        # else:
+        #     txt = "projects"
+        # return f"{num} {txt}"
+
     def name(self):
         if self.title:
             return self.title
