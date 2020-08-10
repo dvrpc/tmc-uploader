@@ -160,9 +160,12 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th scope="col">Your Projects</th>
-                                <th scope="col">Description</th>
-                                <th scope="col"># Files</th>
+                                <th scope="col">File Name</th>
+                                <th scope="col">Model ID</th>
+                                <th scope="col">AM Peak</th>
+                                <th scope="col">AM Volume</th>
+                                <th scope="col">PM Peak</th>
+                                <th scope="col">PM Volume</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -173,7 +176,12 @@
                                             {{file.name()}}
                                         </a>
                                     </td>
-                                </tr>
+                                    <td class="small-table-text">{{file.model_id}}</td>
+                                    <td class="small-table-text">{{ file.am_peak_start }}</td>
+                                    <td class="small-table-text">{{ "{0:,.0f}".format(file.am_volume) }}</td>
+                                    <td class="small-table-text">{{ file.pm_peak_start }}</td>
+                                    <td class="small-table-text">{{ "{0:,.0f}".format(file.pm_volume) }}</td>
+                                    </tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -199,10 +207,6 @@
                                 </th>
                                 <th scope="col">File Name</th>
                                 <th scope="col">Model ID</th>
-                                <th scope="col">AM Peak</th>
-                                <th scope="col">AM Volume</th>
-                                <th scope="col">PM Peak</th>
-                                <th scope="col">PM Volume</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -225,10 +229,6 @@
                                     </a>
                                 </td>
                                 <td class="small-table-text">{{file.model_id}}</td>
-                                <td class="small-table-text">{{ file.am_peak_start }}</td>
-                                <td class="small-table-text">{{ "{0:,.0f}".format(file.am_volume) }}</td>
-                                <td class="small-table-text">{{ file.pm_peak_start }}</td>
-                                <td class="small-table-text">{{ "{0:,.0f}".format(file.pm_volume) }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
