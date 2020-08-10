@@ -101,7 +101,7 @@
           </div>            
 
           <!-- Top row, form and map -->
-          <div class="row pl-4 pr-4 ">
+        <div class="row pl-4 pr-4 ">
                 <div class="col-6 p-4 rounded transparent-white">
                     <h3>
                         {{this_project.name}}
@@ -111,6 +111,7 @@
                         <a class="btn btn-light btn-sm" href="/all-projects" role="button">Return to all projects</a>
                     </h3>
                     <hr>
+                    GRAPH WILL GO HERE
 
 
                 </div>
@@ -147,8 +148,94 @@
                     </div>
           
                   </div>                
+        </div>
+
+        <div class="row pl-4 pr-4 pt-2">
+            <div class="col p-4 rounded transparent-white">
+                {% if not this_project.tmc_files %}
+                <p>
+                    Files assigned to this project will appear here.
+                </p>
+                {% else %}
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">Your Projects</th>
+                                <th scope="col">Description</th>
+                                <th scope="col"># Files</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in this_project.tmc_files %}
+                                <tr>
+                                    <td>
+                                        <a href="/file/{{file.uid}}">
+                                            {{file.name()}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row pl-4 pr-4 pt-2">
+            <div class="col-sm p-4 rounded transparent-white mr-2">
+                adsfasd
             </div>
 
+            <div class="col-sm p-4 rounded transparent-white">
+                <form action="/project/{{this_project.uid}}" method="POST">
+                    <center>
+                        <button type="submit" class="btn btn-outline-primary btn-lg mb-2 ">Update File Assignment</button>
+                    </center>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    &#x2714;
+                                </th>
+                                <th scope="col">File Name</th>
+                                <th scope="col">Model ID</th>
+                                <th scope="col">AM Peak</th>
+                                <th scope="col">AM Volume</th>
+                                <th scope="col">PM Peak</th>
+                                <th scope="col">PM Volume</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in all_tmc_files %}
+                            <tr>
+                                <td>
+                                    {% if this_project.uid in file.pid_list() %}
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="file_{{file.uid}}" checked>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="file_{{file.uid}}">
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="/file/{{file.uid}}">
+                                        {{file.name()}}
+                                    </a>
+                                </td>
+                                <td class="small-table-text">{{file.model_id}}</td>
+                                <td class="small-table-text">{{ file.am_peak_start }}</td>
+                                <td class="small-table-text">{{ "{0:,.0f}".format(file.am_volume) }}</td>
+                                <td class="small-table-text">{{ file.pm_peak_start }}</td>
+                                <td class="small-table-text">{{ "{0:,.0f}".format(file.pm_volume) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
 
 
         </div>

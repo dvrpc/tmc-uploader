@@ -244,12 +244,15 @@ class TMCFile(db.Model):
         unique=False
     )
 
-    # projects = db.relationship(
-    #     'Project',
-    #     secondary=project_files,
-    #     lazy='subquery',
-    #     backref=db.backref(__tablename__, lazy=True)
-    # )
+    project_ids = db.relationship(
+        'Project',
+        secondary=project_files,
+        lazy='subquery',
+        backref=db.backref(__tablename__, lazy=True)
+    )
+
+    def pid_list(self):
+        return [p.uid for p in self.project_ids]
 
     def name(self):
         if self.title:
