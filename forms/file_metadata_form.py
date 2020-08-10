@@ -1,15 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextField, IntegerField
+from wtforms import StringField, SubmitField, TextField, IntegerField, FloatField
 
 
 class UpdateMetadataForm(FlaskForm):
 
     title = StringField("Title")
-    model_id = IntegerField("model ID")
-    lat = StringField("lat")
-    lng = StringField("lng")
+    model_id = StringField("model ID")
+    lat = FloatField("lat")
+    lng = FloatField("lng")
     legs = TextField("legs")
     movements = TextField("movements")
     modes = TextField("modes")
-
-    submit = SubmitField('Update Metadata')
