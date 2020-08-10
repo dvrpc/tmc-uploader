@@ -102,20 +102,41 @@
 
           <!-- Top row, form and map -->
         <div class="row pl-4 pr-4 ">
-                <div class="col-6 p-4 rounded transparent-white">
+                <div class="col-8 p-4 rounded transparent-white">
                     <h3>
                         {{this_project.name}}
-                        &nbsp; &nbsp; &nbsp;
-                        <a href="{{request.path}}/assign" class="btn btn-secondary btn-sm">Manage Files</a>
                         &nbsp; &nbsp; &nbsp;
                         <a class="btn btn-light btn-sm" href="/all-projects" role="button">Return to all projects</a>
                     </h3>
                     <hr>
-                    GRAPH WILL GO HERE
+                    
+
+                    <div class="chart" id="bargraph" >
+                        <script>
+                        var graphs = {{ fig | safe}};
+                        var layout = {
+                            title: "All Files",
+                            barmode: 'stack',
+                            hovermode: 'closest',
+                            // showlegend: false,
+                            height: 350,
+                            paper_bgcolor: "rgba(0,0,0,0)",
+                            plot_bgcolor: "rgba(0,0,0,0)",
+                            yaxis: {gridcolor: "rgba(0,0,0,0.1)"},
+                            font: {
+                                family: 'Roboto Mono, monospace',
+                                size: 10,
+                                color: '#fffff'
+                            },
+                            // legend: {"orientation": "h"}
+                        };
+                        Plotly.plot('bargraph',graphs,layout);
+                        </script>
+                    </div>
 
 
                 </div>
-                <div class="col-6 pl-2 pr-0 rounded" style="min-height: 40vh;">
+                <div class="col-4 pl-2 pr-0 rounded" style="min-height: 40vh;">
                     <div id="map" style="height: 100%" class="pr-0">
                       <script>
                         var mymap = L.map('map').setView([39.952297, -75.163743], 10);

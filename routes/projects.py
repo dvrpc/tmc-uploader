@@ -9,11 +9,15 @@ from flask import (
 )
 from flask_login import login_required, current_user
 
+import plotly
+import plotly.graph_objects as go
 
 from db import db
 from models import Project, TMCFile
 from forms.add_project_form import AddProjectForm
 from forms.assign_files_to_project import AssignFilesToProject
+from common.get_project_data import project_df
+
 
 project_bp = Blueprint(
     'project_bp', __name__,
@@ -145,11 +149,24 @@ def single_project(project_id):
 
     latlng_data = [[f.lat, f.lng] for f in this_project.tmc_files]
 
+    all_dfs = project_df(project_id)
+
+    data = []
+    for df in all_dfs:
+        df_name = df.location.unique()[0]
+        data.append(go.Bar(x=df.index, y=df["total_15_min"], name=df_name))
+
+    graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
+
+
+    # flash(df, "info")
+
     return render_template(
         'single_project.html',
         this_project=this_project,
         latlng_data=json.dumps(latlng_data),
-        all_tmc_files=all_tmc_files
+        all_tmc_files=all_tmc_files,
+        fig=graphJSON,
         # all_projects=all_projects,
         # form=form,
     )
