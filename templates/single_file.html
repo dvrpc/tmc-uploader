@@ -42,6 +42,8 @@
             }
             .inline-code{
               font-family: 'Roboto Mono', monospace;
+              /* font-size: 75%; */
+              font-style: italic;
             }
         </style>
 
@@ -102,10 +104,15 @@
           <div class="row pl-4 pr-4 ">
                 <div class="col-6 p-4 rounded transparent-white">
                     <h3>
-                       {{this_file.name() }}
-                    </h3>
-                    <p>
-                      Source filename: <span class="inline-code btn btn-sm btn-secondary disabled">{{this_file.filename}}</span>
+                      {{this_file.name() }}
+                      &nbsp; &nbsp; &nbsp;
+                      <a class="btn btn-light btn-sm" href="/all-files" role="button">Return to all files</a>
+                      &nbsp; &nbsp; &nbsp;
+                      <a href="{{request.path}}/assign" class="btn btn-secondary btn-sm">Add File to Project</a>
+
+                      </h3>
+                    <p class="inline-code">
+                      {{this_file.filename}}
                     </p>
                     <hr>
                     <form method="post" action="{{request.path}}" >
@@ -176,9 +183,6 @@
                           <button type="submit" class="btn btn-primary mt-2">Update Metadata</button>
                         </div>
                       </form>
-                      <div class="text-center mt-2">
-                        <a href="#" class="btn btn-secondary">Add File to Project</a>
-                    </div>
 
 
 
@@ -207,7 +211,7 @@
                         function onMapClick(e) {
                             popup
                                 .setLatLng(e.latlng)
-                                .setContent("New TMC Location")
+                                .setContent('Click "Update Metadata" to save this location')
                                 .openOn(mymap);
                                 $('#lat').val(e.latlng.lat);
                                 $('#lng').val(e.latlng.lng);
