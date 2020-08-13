@@ -9,5 +9,6 @@ class UpdateMetadataForm(FlaskForm):
     lat = FloatField("lat")
     lng = FloatField("lng")
     legs = TextField("legs")
+    leg_names = TextField("leg names")
     movements = TextField("movements")
     modes = TextField("modes")
