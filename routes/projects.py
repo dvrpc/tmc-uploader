@@ -147,7 +147,7 @@ def single_project(project_id):
 
     this_project = Project.query.filter_by(uid=project_id).first()
 
-    latlng_data = [[f.lat, f.lng] for f in this_project.tmc_files]
+    latlng_data = [[f.lat, f.lng, f.name(), f.uid] for f in this_project.tmc_files]
 
     all_dfs = project_df(project_id)
 
