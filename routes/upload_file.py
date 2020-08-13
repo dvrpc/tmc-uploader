@@ -36,6 +36,8 @@ def upload_file():
         raw_tmc = SQLUpload(data)
         df = raw_tmc.spliced_light_and_heavy_df()
 
+        full_leg_names = raw_tmc.extract_metadata()["legs"]
+
         # Get list of all modes, legs, and movements
         modes, legs, movements = [], [], []
         column_list = [x.split("_") for x in df.columns]
@@ -72,6 +74,7 @@ def upload_file():
             data_date=data_date,
             modes=modes,
             legs=legs,
+            leg_names=str(full_leg_names),
             movements=movements,
             am_peak_start=am_start,
             pm_peak_start=pm_start,

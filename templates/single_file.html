@@ -42,8 +42,8 @@
             }
             .inline-code{
               font-family: 'Roboto Mono', monospace;
-              /* font-size: 75%; */
-              font-style: italic;
+              font-size: 85%;
+              /* font-style: italic; */
             }
         </style>
 
@@ -102,13 +102,16 @@
 
           <!-- Top row, form and map -->
           <div class="row pl-4 pr-4 ">
-                <div class="col-6 p-4 rounded transparent-white">
+                <div class="col-8 p-4 rounded transparent-white ">
                     <h3>
                       {{this_file.name() }}
-                    </h3>                   
-                    <p class="inline-code">
-                      {{this_file.filename}}
-                    </p>
+                    </h3>
+                    <p>
+                      Source filename: 
+                      <span class="inline-code">
+                        {{this_file.filename}}
+                      </span>
+                    </p>                   
                     <hr>
                     {% if this_file.num_projects() > 0 %}
                       <p>
@@ -126,7 +129,7 @@
                     <form method="post" action="{{request.path}}/metadata-update" >
   
                         {{metadata_form.csrf_token }}
-                        <table style="width:100%">
+                        <table style="width:100%" class="text-center">
                           <tbody>
                             <tr >
                               <td>
@@ -161,14 +164,6 @@
                               </td>
                             </tr>
                             <tr>
-                              <td>
-                                Legs
-                              </td>
-                              <td>
-                                <textarea class="form-control roboto" id="legs" name="legs" rows="1">{{this_file.legs}}</textarea>
-                              </td>
-                            </tr>
-                            <tr>
                                 <td>
                                   Movements
                                 </td>
@@ -184,7 +179,22 @@
                                   <textarea class="form-control roboto" id="modes" name="modes" rows="1">{{this_file.modes}}</textarea>
                                 </td>
                               </tr>
-              
+                              <tr>
+                                <td>
+                                  Legs
+                                </td>
+                                <td>
+                                  <textarea class="form-control roboto" id="legs" name="legs" rows="1">{{this_file.legs}}</textarea>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  Leg Names
+                                </td>
+                                <td>
+                                  <textarea class="form-control roboto" id="leg_names" name="leg_names" rows="2">{{this_file.leg_names}}</textarea>
+                                </td>
+                              </tr>
                           </tbody>
                         </table>
                         <div class="text-center">
@@ -195,7 +205,7 @@
 
 
                 </div>
-                <div class="col-6 pl-2 pr-0 rounded" style="min-height: 40vh;">
+                <div class="col-4 pl-2 pr-0 rounded" style="min-height: 40vh;">
                     <div id="map" style="height: 100%" class="pr-0">
                       <script>
                         var lnglat = {{latlng_data | safe }};

@@ -204,6 +204,11 @@ class TMCFile(db.Model):
         nullable=True,
         unique=False
     )
+    leg_names = db.Column(
+        db.Text,
+        nullable=True,
+        unique=False
+    )
     movements = db.Column(
         db.Text,
         nullable=True,
