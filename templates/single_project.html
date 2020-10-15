@@ -33,6 +33,7 @@
             }
             .table>thead>tr>th {
                 border-top: none;
+                border-bottom: none;
             }
             .small-table-text{
                 font-size: 70%;
@@ -106,6 +107,8 @@
                     <h3>
                         {{this_project.name}}
                         &nbsp; &nbsp; &nbsp;
+                        <a class="btn btn-light btn-sm" href="/all-projects" role="button">Open Data Explorer</a>
+                        &nbsp; &nbsp; &nbsp;
                         <a class="btn btn-light btn-sm" href="/all-projects" role="button">Return to all projects</a>
                     </h3>
                     <hr>
@@ -133,6 +136,34 @@
                         Plotly.plot('bargraph',graphs,layout);
                         </script>
                     </div>
+
+                    <p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr >
+                                    <th></th>
+                                    <th colspan="2">Time</th>
+                                    <th colspan="2">Volume</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">AM</th>
+                                    <th scope="col">PM</th>
+                                    <th scope="col">AM</th>
+                                    <th scope="col">PM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" class="text-center">Peak-Hour Data for {{this_project.name}}:</th>
+                                    <td>{{peak_data['am_start']}}</td>
+                                    <td>{{peak_data['pm_start']}}</td>
+                                    <td>{{peak_data['am_vol']}}</td>
+                                    <td>{{peak_data['pm_vol']}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p>
 
 
                 </div>
@@ -181,7 +212,7 @@
                     <table class="table table-sm">
                         <thead>
                             <tr>
-                                <th scope="col">File Name</th>
+                                <th scope="col">Project Files</th>
                                 <th scope="col">Model ID</th>
                                 <th scope="col">AM Peak</th>
                                 <th scope="col">AM Volume</th>
@@ -212,21 +243,59 @@
 
         <div class="row pl-4 pr-4 pt-2">
             <div class="col-sm p-4 rounded transparent-white mr-2">
-                adsfasd
+                <h5>
+                    Export a Summary File to Excel
+                </h5>
+                <form action="#">
+                    <div class="form-row">
+                      <div class="col-5">
+                        Select a start time and summary format:
+                      </div>
+                      <div class="col-2">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            {% for hour in range(6, 20) %}
+                                {% for minute in ["00", "15", "30", "45"]%}
+                                    <option value="">{{hour}}:{{minute}}</option>
+                                {% endfor %}
+                            {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-2">
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="">Synchro</option>
+                            <option value="">Vistro</option>
+                            <option value="">Vissim</option>
+                        </select>
+                      </div>
+                      <div class="col-3">
+                        <button type="submit" class="btn btn-outline-primary btn ">Export</button>
+                      </div>
+                    </div>
+                  </form>
+                  <hr>
+
+
             </div>
 
             <div class="col-sm p-4 rounded transparent-white">
                 <form action="/project/{{this_project.uid}}" method="POST">
-                    <center>
-                        <button type="submit" class="btn btn-outline-primary btn-lg mb-2 ">Update File Assignment</button>
-                    </center>
+                    <div class="form-group row">
+                        <div class="col-6 text-center">
+                            <h3>
+                                Select Project Files 
+                            </h3>   
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-outline-primary btn-sm mb-2 ">Update File Assignment</button>
+                        </div>
+                    </div>
                     <table class="table table-sm">
                         <thead>
                             <tr>
                                 <th scope="col">
                                     &#x2714;
                                 </th>
-                                <th scope="col">File Name</th>
+                                <th scope="col">All Files</th>
                                 <th scope="col">Model ID</th>
                             </tr>
                         </thead>

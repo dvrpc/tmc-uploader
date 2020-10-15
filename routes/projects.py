@@ -17,6 +17,7 @@ from models import Project, TMCFile
 from forms.add_project_form import AddProjectForm
 from forms.assign_files_to_project import AssignFilesToProject
 from common.get_project_data import project_df
+from common.calculate_project_peak_hour import project_peak_hours
 
 
 project_bp = Blueprint(
@@ -111,40 +112,6 @@ def single_project(project_id):
 
         db.session.commit()
 
-
-    #     new_name = form.project_name.data
-    #     desc = form.description.data
-
-    #     # QA -  check the user input
-    #     if len(new_name) == 0:
-    #         flash("Please provide a name for your project", "danger")
-    #         return redirect(url_for('project_bp.all_projects'))
-
-    #     if len(new_name) > 50:
-    #         flash("Please use a shorter name for your project", "danger")
-    #         return redirect(url_for('project_bp.all_projects'))
-
-    #     if len(desc) == 0:
-    #         flash("Please provide a description for your project", "danger")
-    #         return redirect(url_for('project_bp.all_projects'))
-
-    #     # Check if this project already exists
-    #     if Project.query.filter_by(name=new_name).first():
-    #         flash(f'A project named "{new_name}" already exists', "danger")
-    #         return redirect(url_for('project_bp.all_projects'))
-
-    #     new_project = Project(
-    #         name=new_name,
-    #         description=desc,
-    #         created_by=current_user.id
-    #     )
-    #     db.session.add(new_project)
-    #     db.session.commit()
-
-    #     flash(f"Added new project named: {new_name}", "info")
-
-    # all_projects = Project.query.all()
-
     this_project = Project.query.filter_by(uid=project_id).first()
 
     latlng_data = [[f.lat, f.lng, f.name(), f.uid] for f in this_project.tmc_files]
@@ -158,6 +125,15 @@ def single_project(project_id):
 
     graphJSON = json.dumps(data, cls=plotly.utils.PlotlyJSONEncoder)
 
+    if this_project.num_files() > 0:
+        peak_data = project_peak_hours(project_id)
+    else:
+        peak_data = {
+            "am_start": "No data yet",
+            "pm_start": "No data yet",
+            "am_vol": "No data yet",
+            "pm_vol": "No data yet",
+        }
 
     # flash(df, "info")
 
@@ -167,6 +143,5 @@ def single_project(project_id):
         latlng_data=json.dumps(latlng_data),
         all_tmc_files=all_tmc_files,
         fig=graphJSON,
-        # all_projects=all_projects,
-        # form=form,
+        peak_data=peak_data,
     )

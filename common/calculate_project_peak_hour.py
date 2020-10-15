@@ -43,8 +43,8 @@ def project_peak_hours(project_id: int):
     pm = df[df.index >= '12:00'].total
 
     return {
-        "am_vol": max(am),
+        "am_vol": int(max(am)),
         "am_start": am.idxmax(),
-        "pm_vol": max(pm),
+        "pm_vol": int(max(pm)),
         "pm_start": pm.idxmax()
     }
